@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Remana mark (S1). One colour; inherits currentColor.
+       Left comma solid = what was said. Right comma hollow = what was inferred.
+       Geometry: head 30x30 (corner 6), tail = quarter ring R30/r18 cut flat, hollow wall 8. -->
+  <path transform="translate(30 57.5)" fill="currentColor" d="M-15 0A30 30 0 0 1 15 -30L15 -18A18 18 0 0 0 5.05 -15L9 -15Q15 -15 15 -9V9Q15 15 9 15H-9Q-15 15 -15 9Z"/>
+  <path transform="translate(70 57.5)" fill="currentColor" fill-rule="evenodd" d="M-15 0A30 30 0 0 1 15 -30L15 -18A18 18 0 0 0 5.05 -15L9 -15Q15 -15 15 -9V9Q15 15 9 15H-9Q-15 15 -15 9ZM-7 -7H7V7H-7Z"/>
+</svg>
