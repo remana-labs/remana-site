@@ -1,6 +1,13 @@
 ---
-// Static build: the success state is a separate page (/joined), not a query param this file could not read.
-const siteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? "1x00000000000000000000AA";
+// Static build: the outcome pages are /joined and /not-joined, not query params this file could not read.
+// The always-pass TEST key is only for `astro dev`; a production build without the real key must fail
+// loudly here rather than ship a form the real secret will reject every time.
+const TEST_SITE_KEY = "1x00000000000000000000AA";
+let siteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY as string | undefined;
+if (!siteKey) {
+  if (import.meta.env.DEV) siteKey = TEST_SITE_KEY;
+  else throw new Error("PUBLIC_TURNSTILE_SITE_KEY is not set for a production build (set it in the Pages project's build variables)");
+}
 ---
 <form method="post" action="/api/waitlist" class="waitlist">
   <label for="email">Email</label>

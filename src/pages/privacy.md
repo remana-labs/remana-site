@@ -28,10 +28,14 @@ always tell the two apart.
   produce the answer.
 
 All three services run on servers we operate, reached through `api.remana.ai`, which is fronted by
-Cloudflare. Speech-to-text and the language model process a request and keep nothing after it.
-Speaker recognition accepts a recording in parts, so it holds the audio on the server **for up to one
-hour** while the parts arrive and the job runs, then deletes it. No transcript and no memory is
-stored on our servers.
+Cloudflare. We do not store your audio, transcripts or memory on our servers: speech-to-text and the
+language model answer a request and discard it. Two exceptions, stated plainly:
+
+- Speaker recognition accepts a recording in parts, so it holds the audio on the server **for up to
+  one hour** while the parts arrive and the job runs, then deletes it.
+- The language-model server's **request logs** can currently include transcript text. They are
+  operational logs on the server itself, not a database, not backed up, and gone when the server
+  process is replaced. We are turning that logging off; this page will change when it is.
 
 ## What stays on your phone
 
@@ -58,8 +62,8 @@ for profiling.
 
 ## Deleting your data
 
-Deleting a meeting in the app deletes it from your phone; nothing about it exists on our servers to
-delete. Uninstalling the app destroys the store's encryption key and, with it, the store. To have
+Deleting a meeting in the app deletes it from your phone. Our servers hold no copy to delete, apart
+from a speaker-recognition job still inside its one-hour window and the request logs described above. Uninstalling the app destroys the store's encryption key and, with it, the store. To have
 your account identifier and email removed, write to [hello@remana.ai](mailto:hello@remana.ai).
 
 ## This website

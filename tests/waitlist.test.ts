@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { normaliseEmail, parseWaitlistBody, verifyTurnstile } from "../src/lib/waitlist";
+import { normaliseEmail, parseWaitlistBody, verifyTurnstile, responseFor } from "../src/lib/waitlist";
 
 describe("normaliseEmail", () => {
   it("trims and lowercases", () => expect(normaliseEmail("  Reza@Example.com ")).toBe("reza@example.com"));
@@ -21,4 +21,27 @@ describe("verifyTurnstile", () => {
   it("rejected on failure", async () => expect(await verifyTurnstile("s", "t", null, respond({ success: false, "error-codes": ["invalid-input-response"] }) as any)).toBe("rejected"));
   it("unavailable when siteverify cannot be reached", async () => expect(await verifyTurnstile("s", "t", null, (async () => { throw new Error("ECONNRESET"); }) as any)).toBe("unavailable"));
   it("rejected without a token, without calling out", async () => { let called = 0; expect(await verifyTurnstile("s", "", null, (async () => { called++; return new Response("{}"); }) as any)).toBe("rejected"); expect(called).toBe(0); });
+});
+
+describe("verifyTurnstile on a non-2xx siteverify", () => {
+  it("is unavailable, not the user's fault", async () =>
+    expect(await verifyTurnstile("s", "t", null, (async () => new Response(JSON.stringify({ success: false, "error-codes": ["internal-error"] }), { status: 502 })) as any)).toBe("unavailable"));
+});
+
+describe("responseFor", () => {
+  const origin = "https://remana.ai";
+  it("browsers are redirected to static pages, never shown JSON", () => {
+    expect(responseFor("ok", true, origin)).toEqual({ status: 303, location: "https://remana.ai/joined" });
+    for (const k of ["bad-email", "rejected", "unavailable", "too-large", "misconfigured", "storage"] as const)
+      expect(responseFor(k, true, origin), k).toEqual({ status: 303, location: "https://remana.ai/not-joined" });
+  });
+  it("API clients get the status that names the cause", () => {
+    expect(responseFor("ok", false, origin)).toEqual({ status: 200, body: { ok: true } });
+    expect(responseFor("bad-email", false, origin).status).toBe(400);
+    expect(responseFor("rejected", false, origin).status).toBe(400);
+    expect(responseFor("too-large", false, origin).status).toBe(413);
+    expect(responseFor("unavailable", false, origin).status).toBe(502);
+    expect(responseFor("storage", false, origin).status).toBe(503);
+    expect(responseFor("misconfigured", false, origin).status).toBe(500);
+  });
 });

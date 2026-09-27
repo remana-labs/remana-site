@@ -19,7 +19,8 @@ Your memory, transcripts and voiceprints stay on the phone. The full picture is 
 
 ## How do I delete a meeting?
 
-Delete it in the app. It is removed from your phone, and there is no copy on our servers to remove.
+Delete it in the app. It is removed from your phone. Our servers keep no copy of it — the [privacy
+policy](/privacy) lists the two short-lived exceptions.
 
 ## Does signing out delete anything?
 

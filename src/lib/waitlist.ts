@@ -28,9 +28,25 @@ export async function verifyTurnstile(secret: string, token: string, ip: string 
   if (ip) body.set("remoteip", ip);
   try {
     const r = await fetchFn("https://challenges.cloudflare.com/turnstile/v0/siteverify", { method: "POST", body });
+    if (!r.ok) return "unavailable"; // Cloudflare's problem, not the visitor's
     const j = (await r.json()) as { success?: boolean };
     return j.success ? "ok" : "rejected";
   } catch {
     return "unavailable";
   }
+}
+
+export type Outcome = "ok" | "bad-email" | "rejected" | "unavailable" | "too-large" | "misconfigured" | "storage";
+
+const STATUS: Record<Outcome, number> = { ok: 200, "bad-email": 400, rejected: 400, "too-large": 413, unavailable: 502, storage: 503, misconfigured: 500 };
+const MESSAGE: Record<Outcome, string> = {
+  ok: "", "bad-email": "email", rejected: "verification", "too-large": "too large",
+  unavailable: "verification unavailable, try again", storage: "storage unavailable, try again", misconfigured: "misconfigured",
+};
+
+/** A browser (the plain <form>) always lands on a page; an API client gets a status and a reason. */
+export function responseFor(kind: Outcome, wantsHtml: boolean, origin: string):
+  { status: number; location?: string; body?: Record<string, unknown> } {
+  if (wantsHtml) return { status: 303, location: `${origin}/${kind === "ok" ? "joined" : "not-joined"}` };
+  return kind === "ok" ? { status: 200, body: { ok: true } } : { status: STATUS[kind], body: { ok: false, error: MESSAGE[kind] } };
 }
