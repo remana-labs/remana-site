@@ -5,7 +5,7 @@ compatibility_date = "2026-09-26"
 [[d1_databases]]
 binding = "DB"
 database_name = "remana-waitlist"
-database_id = "REPLACED-IN-TASK-5"
+database_id = "5a31d428-35a1-4242-81e1-f8b92149f6aa"
 migrations_dir = "migrations"
 
 # Preview deployments get their own database; without this block previews write into production.
@@ -13,5 +13,5 @@ migrations_dir = "migrations"
 [[env.preview.d1_databases]]
 binding = "DB"
 database_name = "remana-waitlist-preview"
-database_id = "REPLACED-IN-TASK-5"
+database_id = "d18d2afb-a63c-4c3e-aa26-4a52967e853d"
 migrations_dir = "migrations"
