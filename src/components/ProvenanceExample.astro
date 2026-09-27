@@ -1,0 +1,17 @@
+---
+---
+<section class="prov" aria-labelledby="prov-h">
+  <h2 id="prov-h">Two kinds of memory, never confused</h2>
+  <ul>
+    <li><span class="dot solid" aria-hidden="true"></span><div><strong>Priya will send the revised budget by Friday.</strong><small>From the transcript</small></div></li>
+    <li><span class="dot hollow" aria-hidden="true"></span><div><strong>The budget is probably tied to the Q4 headcount decision.</strong><small>Generated from your memory</small></div></li>
+  </ul>
+  <p>Every item Remana keeps carries its origin. A solid mark means someone said it. A hollow mark means Remana inferred it — and says so.</p>
+</section>
+<style>
+  ul { list-style: none; padding: 0; margin: 0; display: grid; gap: var(--space-md); }
+  li { display: grid; grid-template-columns: 12px 1fr; gap: var(--space-md); align-items: start; background: var(--surface); border-radius: var(--radius-lg); padding: var(--space-lg); max-width: none; }
+  .dot { width: 12px; height: 12px; border-radius: 50%; margin-top: 6px; }
+  .solid { background: var(--accent); } .hollow { border: 2px solid var(--mark-hollow); }
+  li div { display: grid; gap: var(--space-xs); } strong { color: var(--ink); font-weight: 600; } small { color: var(--ink-2); }
+</style>

@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://remana.ai/sitemap-index.xml
