@@ -41,3 +41,16 @@ All commands are run from the root of the project, from a terminal:
 ## 👀 Want to learn more?
 
 Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+
+## Local development
+
+```bash
+npm install
+npm run dev                       # the static site
+npm run build && npx wrangler pages dev dist   # site + the waitlist Function against a LOCAL D1
+```
+
+For the Function locally: `npx wrangler d1 migrations apply remana-waitlist --local` once, and a
+`.dev.vars` file (gitignored) containing `TURNSTILE_SECRET=1x0000000000000000000000000000000AA`
+(Cloudflare's always-pass test secret; the form's matching test site key is the default in
+`src/components/Waitlist.astro`). `npm test` runs vitest and the internal link check.

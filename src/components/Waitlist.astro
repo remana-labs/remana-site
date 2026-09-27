@@ -1,0 +1,22 @@
+---
+// Static build: the success state is a separate page (/joined), not a query param this file could not read.
+const siteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? "1x00000000000000000000AA";
+---
+<form method="post" action="/api/waitlist" class="waitlist">
+  <label for="email">Email</label>
+  <div class="row">
+    <input id="email" name="email" type="email" required autocomplete="email" inputmode="email" placeholder="you@example.com" />
+    <button type="submit">Join the waitlist</button>
+  </div>
+  <input type="hidden" name="source" value={Astro.url.pathname} />
+  <div class="cf-turnstile" data-sitekey={siteKey} data-size="flexible"></div>
+  <noscript><p>The form needs JavaScript for its spam check. Without it, just email <a href="mailto:hello@remana.ai?subject=waitlist">hello@remana.ai</a>.</p></noscript>
+</form>
+<script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+<style>
+  .waitlist { display: grid; gap: var(--space-sm); max-width: 32rem; }
+  label { font-weight: 500; color: var(--ink); }
+  .row { display: flex; flex-wrap: wrap; gap: var(--space-sm); }
+  input { flex: 1 1 14rem; min-height: 48px; padding: 0 var(--space-md); border-radius: var(--radius-md); border: 1px solid var(--line); background: var(--surface); color: var(--ink); font: inherit; }
+  button { min-height: 48px; padding: 0 var(--space-xl); border: 0; border-radius: var(--radius-pill); background: var(--accent); color: var(--bg); font: inherit; font-weight: 600; cursor: pointer; }
+</style>

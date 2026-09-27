@@ -1,6 +1,6 @@
 import { readFileSync, existsSync } from "node:fs";
 import { describe, it, expect } from "vitest";
-const png = (p: string) => { const b = readFileSync(p); return { w: b.readUInt32BE(16), h: b.readUInt32BE(20) }; };
+const png = (p: string) => { const b = readFileSync(p); const v = new DataView(b.buffer, b.byteOffset, b.byteLength); return { w: v.getUint32(16), h: v.getUint32(20) }; };
 describe("brand assets", () => {
   it.each([["public/apple-touch-icon.png", 180, 180], ["public/icon-192.png", 192, 192], ["public/icon-512.png", 512, 512],
            ["public/maskable-512.png", 512, 512], ["public/og.png", 1280, 640], ["public/press/remana-icon-1024.png", 1024, 1024],

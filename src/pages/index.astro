@@ -2,13 +2,14 @@
 import Base from "../layouts/Base.astro";
 import BrandMark from "../components/BrandMark.astro";
 import ProvenanceExample from "../components/ProvenanceExample.astro";
+import Waitlist from "../components/Waitlist.astro";
 ---
 <Base title="remana" description="A meeting memory that knows what was said, and what it only inferred.">
   <section class="hero">
     <BrandMark height={56} />
     <h1>A meeting memory that knows what was said — and what it only inferred.</h1>
     <p>Record a meeting on your phone. Remana turns it into memory — the facts, the commitments, the open questions, per person — and marks every one of them: <strong>said</strong>, or <strong>inferred</strong>. Your memory stays on your phone. The cloud only does the listening.</p>
-    <div id="waitlist"></div>
+    <Waitlist />
     <p class="meta">Android first · iOS later</p>
   </section>
   <ProvenanceExample />
