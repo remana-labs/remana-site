@@ -54,3 +54,15 @@ For the Function locally: `npx wrangler d1 migrations apply remana-waitlist --lo
 `.dev.vars` file (gitignored) containing `TURNSTILE_SECRET=1x0000000000000000000000000000000AA`
 (Cloudflare's always-pass test secret; the form's matching test site key is the default in
 `src/components/Waitlist.astro`). `npm test` runs vitest and the internal link check.
+
+## Operations
+
+- **Deployed how:** `remana-site` is a direct-upload Cloudflare Pages project. Deploy with
+  `PUBLIC_TURNSTILE_SITE_KEY=<site key> npm run build && npx wrangler pages deploy dist --project-name remana-site --branch main`
+  (needs `CLOUDFLARE_API_TOKEN` + `CLOUDFLARE_ACCOUNT_ID`). Bindings (D1 for production and preview)
+  come from `wrangler.toml`; `TURNSTILE_SECRET` is a Pages secret (`npx wrangler pages secret put`).
+- **Export the waitlist:** `npx wrangler d1 execute remana-waitlist --remote --command "select * from waitlist" --json`
+- **Rotate the Turnstile secret:** Cloudflare dashboard → Turnstile → the widget → rotate; then
+  `npx wrangler pages secret put TURNSTILE_SECRET --project-name remana-site`; no redeploy needed.
+- **Domains:** `remana.ai` and `www.remana.ai` are custom domains on the project (proxied CNAMEs to
+  `remana-site.pages.dev`). `api.remana.ai` is the separate gateway Worker.
