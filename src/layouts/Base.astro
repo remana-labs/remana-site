@@ -1,0 +1,45 @@
+---
+import "../styles/base.css";
+import Lockup from "../components/Lockup.astro";
+interface Props { title?: string; description?: string; frontmatter?: { title: string; description: string } }
+const { title, description } = Astro.props.frontmatter ?? Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{title === "remana" ? "remana" : `${title} · remana`}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={new URL("/og.png", Astro.site)} />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+  </head>
+  <body>
+    <header class="wrap site-header">
+      <Lockup />
+      <nav aria-label="Site"><a href="/about">About</a><a href="/support">Support</a><a href="/press">Press</a></nav>
+    </header>
+    <main class="wrap"><slot /></main>
+    <footer class="wrap site-footer">
+      <a href="/privacy">Privacy</a> · <a href="/terms">Terms</a> · <a href="mailto:hello@remana.ai">hello@remana.ai</a>
+      <span>© 2026 Remana Labs</span>
+    </footer>
+    <!-- Cloudflare Web Analytics: cookieless. Token is added in Task 5 once the Pages site exists. -->
+  </body>
+</html>
+<style>
+  .site-header { display: flex; align-items: center; justify-content: space-between; gap: var(--space-lg); padding-block: var(--space-lg); }
+  nav { display: flex; gap: var(--space-lg); } nav a { color: var(--ink-2); text-decoration: none; }
+  .site-footer { display: flex; flex-wrap: wrap; gap: var(--space-sm) var(--space-md); padding-block: var(--space-xxl); color: var(--ink-2); font-size: 0.875rem; border-top: 1px solid var(--line); margin-top: var(--space-xxxl); }
+  .site-footer span { margin-left: auto; }
+</style>

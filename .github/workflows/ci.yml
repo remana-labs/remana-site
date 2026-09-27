@@ -1,0 +1,16 @@
+name: CI
+on:
+  pull_request:
+  push:
+    branches: [main]
+jobs:
+  build:
+    runs-on: ubuntu-latest   # public repo: never self-hosted
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version-file: .node-version, cache: npm }
+      - run: npm ci
+      - run: npm run check
+      - run: npm run build
+      - run: npm test

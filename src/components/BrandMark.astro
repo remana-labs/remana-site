@@ -1,0 +1,10 @@
+---
+interface Props { height?: number; label?: string }
+const { height = 24, label = "Remana" } = Astro.props;
+const width = Math.round(height * 70 / 45);
+const comma = "M-15,0A30,30 0 0 1 15,-30L15,-18A18,18 0 0 0 5.05,-15L9,-15Q15,-15 15,-9V9Q15,15 9,15H-9Q-15,15 -15,9Z";
+---
+<svg width={width} height={height} viewBox="15 27.5 70 45" role="img" aria-label={label}>
+  <path transform="translate(30 57.5)" fill="var(--accent)" d={comma} />
+  <path transform="translate(70 57.5)" fill="var(--mark-hollow)" fill-rule="evenodd" d={`${comma}M-7,-7H7V7H-7Z`} />
+</svg>
