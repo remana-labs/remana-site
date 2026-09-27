@@ -12,9 +12,18 @@ import ProvenanceExample from "../components/ProvenanceExample.astro";
     <p class="meta">Android first · iOS later</p>
   </section>
   <ProvenanceExample />
-  <!-- Screenshots section returns when the owner supplies three clean shots (see docs/ plan Task 3 step 3). -->
+  <section aria-labelledby="screens-h">
+    <h2 id="screens-h">On your phone</h2>
+    <div class="screens">
+      <img src="/screens/home.png" width="360" height="772" alt="Home: the next meeting and open commitments" loading="lazy" />
+      <img src="/screens/meeting.png" width="360" height="772" alt="A meeting's facts, each with a said-or-inferred mark" loading="lazy" />
+      <img src="/screens/meetings.png" width="360" height="772" alt="Meetings: every recording, with who still needs a name" loading="lazy" />
+    </div>
+  </section>
 </Base>
 <style>
   .hero { padding-block: var(--space-xxxl) var(--space-xl); display: grid; gap: var(--space-lg); }
   .hero p { font-size: 1.125rem; } .meta { color: var(--ink-2); font-size: 0.875rem; }
+  .screens { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--space-lg); }
+  .screens img { width: 100%; height: auto; border-radius: var(--radius-lg); border: 1px solid var(--line); }
 </style>
