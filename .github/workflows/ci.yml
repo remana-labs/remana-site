@@ -5,7 +5,7 @@ on:
     branches: [main]
 jobs:
   build:
-    runs-on: ubuntu-latest   # public repo: never self-hosted
+    runs-on: ubuntu-latest   # public repo: never the org's self-hosted runners
     steps:
       - uses: actions/checkout@v4
         with: { fetch-depth: 0 }   # the policy change-log guard reads real file history
@@ -14,5 +14,11 @@ jobs:
       - run: npm ci
       - run: npm run check
       - run: npm run build
-        env: { PUBLIC_TURNSTILE_SITE_KEY: 1x00000000000000000000AA }   # Cloudflare's always-pass test key; CI is not production
+        env: { PUBLIC_TURNSTILE_SITE_KEY: 0x4AAAAAAFFBWo8mbSSlV_Qw }   # public site key; the same build is tested and deployed
       - run: npm test
+      - name: Deploy to Cloudflare Pages
+        if: github.event_name == 'push'   # main only (see `on`); PR builds are never deployed
+        run: npx wrangler pages deploy dist --project-name remana-site --branch main
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}

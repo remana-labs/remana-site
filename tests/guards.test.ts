@@ -38,3 +38,19 @@ describe("well-known files", () => {
     JSON.parse(readFileSync("public/.well-known/apple-app-site-association", "utf8"));
   });
 });
+
+describe("CI deploy", () => {
+  const yml = readFileSync(".github/workflows/ci.yml", "utf8");
+  it("runs on GitHub-hosted runners only (public repo)", () => {
+    expect(yml).toContain("ubuntu-latest");
+    expect(yml).not.toMatch(/runs-on:\s*self-hosted/);
+  });
+  it("deploys the tested build to Pages on push to main, never on a pull request", () => {
+    expect(yml).toMatch(/wrangler pages deploy dist --project-name remana-site --branch main/);
+    expect(yml).toMatch(/if: github\.event_name == 'push'/);
+  });
+  it("builds with the real Turnstile site key, so the deployed form is not the always-pass widget", () => {
+    expect(yml).toContain("PUBLIC_TURNSTILE_SITE_KEY: 0x4AAAAAAFFBWo8mbSSlV_Qw");
+    expect(yml).not.toContain("1x00000000000000000000AA");
+  });
+});

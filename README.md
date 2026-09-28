@@ -57,10 +57,14 @@ For the Function locally: `npx wrangler d1 migrations apply remana-waitlist --lo
 
 ## Operations
 
-- **Deployed how:** `remana-site` is a direct-upload Cloudflare Pages project. Deploy with
-  `PUBLIC_TURNSTILE_SITE_KEY=<site key> npm run build && npx wrangler pages deploy dist --project-name remana-site --branch main`
-  (needs `CLOUDFLARE_API_TOKEN` + `CLOUDFLARE_ACCOUNT_ID`). Bindings (D1 for production and preview)
-  come from `wrangler.toml`; `TURNSTILE_SECRET` is a Pages secret (`npx wrangler pages secret put`).
+- **Deployed how:** `remana-site` is a direct-upload Cloudflare Pages project. Every push to `main`
+  deploys from CI (`.github/workflows/ci.yml`: the build that passed the tests is the one uploaded)
+  using the repo secrets `CLOUDFLARE_API_TOKEN` (a token scoped to Account → Cloudflare Pages → Edit,
+  nothing else) and `CLOUDFLARE_ACCOUNT_ID`. Pull requests build and test but never deploy. By hand,
+  with the same two variables exported:
+  `PUBLIC_TURNSTILE_SITE_KEY=0x4AAAAAAFFBWo8mbSSlV_Qw npm run build && npx wrangler pages deploy dist --project-name remana-site --branch main`.
+  Bindings (D1 for production and preview) come from `wrangler.toml`; `TURNSTILE_SECRET` is a Pages
+  secret (`npx wrangler pages secret put`).
 - **Export the waitlist:** `npx wrangler d1 execute remana-waitlist --remote --command "select * from waitlist" --json`
 - **Rotate the Turnstile secret:** Cloudflare dashboard → Turnstile → the widget → rotate; then
   `npx wrangler pages secret put TURNSTILE_SECRET --project-name remana-site`; no redeploy needed.
