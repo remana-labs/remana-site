@@ -28,21 +28,36 @@ always tell the two apart.
   produce the answer.
 
 All three services run on servers we operate, reached through `api.remana.ai`, which is fronted by
-Cloudflare. We do not store your audio, transcripts or memory on our servers: speech-to-text and the
-language model answer a request and discard it. Two exceptions, stated plainly:
+Cloudflare. Speech-to-text and the language model answer a request and discard it: they do not
+store your audio, transcripts or memory. Two exceptions, stated plainly, and one thing you choose:
 
 - Speaker recognition accepts a recording in parts, so it holds the audio on the server **for up to
   one hour** while the parts arrive and the job runs, then deletes it.
 - The language-model server's **request logs** can currently include transcript text. They are
   operational logs on the server itself, not a database, not backed up, and gone when the server
   process is replaced. We are turning that logging off; this page will change when it is.
+- **Backup, if you turn it on** — see below. It is the only place your memory is stored on our side,
+  and it is encrypted so that we cannot read it.
+
+## Backup
+
+Backup is off until you turn it on. When it is on, your phone makes an encrypted copy of your memory
+store — meetings, transcripts, facts, people, voiceprints and settings, but **not your recordings**
+unless you include a particular recording yourself (at most ten) — and uploads it to our storage at
+Cloudflare. The copy is encrypted on your phone with a key that never leaves your devices in a form
+we can use: you keep a recovery code, and your phone's own backup (Google's, end-to-end encrypted
+with your screen lock) can hold the key so a new phone of the same kind restores without the code.
+**We cannot read your backups, and we cannot recover your code.**
+
+A meeting you delete leaves our backups within 7 days of your next backup. Deleting your account
+removes all of your backups immediately.
 
 ## What stays on your phone
 
 Your memory store — meetings, people, facts, commitments, questions — your transcripts, and your
 voiceprints. The store is encrypted with a key that lives in your phone's secure hardware. Voice
-identification (matching a voice to a person you named) runs entirely on the phone; **voiceprints
-never leave it.**
+identification (matching a voice to a person you named) runs entirely on the phone; voiceprints
+never leave it except inside your encrypted backup, if you turn backup on, which we cannot read.
 
 ## Your account
 
@@ -62,9 +77,13 @@ for profiling.
 
 ## Deleting your data
 
-Deleting a meeting in the app deletes it from your phone. Our servers hold no copy to delete, apart
-from a speaker-recognition job still inside its one-hour window and the request logs described above. Uninstalling the app destroys the store's encryption key and, with it, the store. To have
-your account identifier and email removed, write to [hello@remana.ai](mailto:hello@remana.ai).
+Deleting a meeting in the app deletes it from your phone, and from our backups within 7 days of your
+next backup. Apart from your encrypted backups, our servers hold no copy to delete, except a
+speaker-recognition job still inside its one-hour window and the request logs described above.
+Uninstalling the app destroys the phone's store encryption key and, with it, the store on that phone
+(a backup, if you made one, stays restorable with your recovery code). **Settings → Delete account and
+backups** removes your account and every backup at once; the memory on your phone stays. You can
+also write to [hello@remana.ai](mailto:hello@remana.ai).
 
 ## This website
 
@@ -82,6 +101,7 @@ Remana is not intended for anyone under 16, and we do not knowingly hold their d
 
 ## Changes to this policy
 
+- **2026-10-01** — encrypted backup (optional), its deletion window, and in-app account deletion.
 - **2026-09-27** — first version, written for internal testing.
 
 </div>
