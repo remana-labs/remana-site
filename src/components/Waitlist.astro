@@ -8,22 +8,28 @@ if (!siteKey) {
   if (import.meta.env.DEV) siteKey = TEST_SITE_KEY;
   else throw new Error("PUBLIC_TURNSTILE_SITE_KEY is not set for a production build (set it in the Pages project's build variables)");
 }
+interface Props { id?: string; compact?: boolean }
+const { id = "waitlist-form", compact = false } = Astro.props;
 ---
-<form method="post" action="/api/waitlist" class="waitlist">
-  <label for="email">Email</label>
+<form method="post" action="/api/waitlist" class:list={["waitlist", { compact }]}>
+  <label for={id}>Email</label>
   <div class="row">
-    <input id="email" name="email" type="email" required autocomplete="email" inputmode="email" placeholder="you@example.com" />
-    <button type="submit">Join the waitlist</button>
+    <input id={id} name="email" type="email" required autocomplete="email" inputmode="email" placeholder="you@example.com" />
+    <button type="submit" class="btn btn-primary">Join the waitlist</button>
   </div>
   <input type="hidden" name="source" value={Astro.url.pathname} />
   <div class="cf-turnstile" data-sitekey={siteKey} data-size="flexible"></div>
-  <noscript><p>The form needs JavaScript for its spam check. Without it, just email <a href="mailto:hello@remana.ai?subject=waitlist">hello@remana.ai</a>.</p></noscript>
+  <p class="help">Early access on Android, then iPhone. One email when it is your turn; nothing else.</p>
+  <noscript><p class="help">The form needs JavaScript for its spam check. Without it, just email <a href="mailto:hello@remana.ai?subject=waitlist">hello@remana.ai</a>.</p></noscript>
 </form>
 <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 <style>
-  .waitlist { display: grid; gap: var(--space-sm); max-width: 32rem; }
-  label { font-weight: 500; color: var(--ink); }
+  .waitlist { display: grid; gap: var(--space-sm); max-width: 34rem; }
+  label { font-weight: 500; color: var(--ink); font-size: var(--text-sm); }
+  .compact label { position: absolute; left: -999px; }
   .row { display: flex; flex-wrap: wrap; gap: var(--space-sm); }
-  input { flex: 1 1 14rem; min-height: 48px; padding: 0 var(--space-md); border-radius: var(--radius-md); border: 1px solid var(--line); background: var(--surface); color: var(--ink); font: inherit; }
-  button { min-height: 48px; padding: 0 var(--space-xl); border: 0; border-radius: var(--radius-pill); background: var(--accent); color: var(--bg); font: inherit; font-weight: 600; cursor: pointer; }
+  input { flex: 1 1 14rem; min-height: 48px; padding: 0 var(--space-lg); border-radius: var(--radius-pill); border: 1px solid var(--line-strong);
+    background: var(--surface); color: var(--ink); font: inherit; transition: border-color var(--fast) var(--ease); }
+  input:focus { border-color: var(--accent); outline: none; box-shadow: 0 0 0 3px var(--accent-soft); }
+  .help { font-size: var(--text-sm); }
 </style>
