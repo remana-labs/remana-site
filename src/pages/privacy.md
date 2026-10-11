@@ -43,8 +43,8 @@ speed, **not your text**. The exceptions, stated plainly, and one thing you choo
 - **On iPhone**, a finished recording is processed by our meeting service: it receives the audio,
   turns it into a transcript and memory, and holds that until your phone collects it. It deletes it
   then, and at the latest after 72 hours.
-- **Backup, if you turn it on** — see below. It is encrypted so that we cannot read it. Apart from the two above, it is the only place your
-  memory is kept on our side.
+- **Backup, if you turn it on** — see below. It is encrypted so that we cannot read it. Apart from
+  the two above, it is the only place your memory is kept on our side.
 
 ## Backup
 
