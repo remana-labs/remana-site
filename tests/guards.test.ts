@@ -5,11 +5,16 @@ import { describe, it, expect } from "vitest";
 describe("privacy policy", () => {
   it("does not claim more than the servers do today (spec: the three facts)", () => {
     const md = readFileSync("src/pages/privacy.md", "utf8");
-    // Forbidden until vLLM runs with --disable-log-requests (spec → "Three facts", item 1).
+    // Verified 2026-10-11: neither vLLM container has ever logged prompt text (this vLLM does not log
+    // requests by default), so the policy may say the logs hold no text. It still must not claim the
+    // servers hold nothing at all: speaker recognition keeps audio up to an hour, the iPhone meeting
+    // service holds a meeting up to 72 h, and backups exist. Those three must stay named.
     expect(md).not.toContain("No transcript and no memory is stored on our servers");
     expect(md).not.toContain("keep nothing after it");
-    // The caveat that makes the page true today must be there instead.
-    expect(md).toMatch(/request logs/i);
+    expect(md).toMatch(/not your text/i);
+    expect(md).toMatch(/one hour/i);
+    expect(md).toMatch(/72 hours/i);
+    expect(md).toMatch(/Deleting your account/i);
   });
   it("is checked against real history, not a shallow clone", () => {
     // In a depth-1 clone `git log -1 -- file` returns HEAD's date for every file, so the
