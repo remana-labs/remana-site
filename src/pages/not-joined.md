@@ -11,7 +11,7 @@ description: The waitlist form could not be submitted.
 Either the spam check hadn't finished when you pressed the button, or one of our services was
 briefly unavailable. Nothing was saved.
 
-[Try again](/#email) — or just email [hello@remana.ai](mailto:hello@remana.ai?subject=waitlist)
+[Try again](/#waitlist) — or just email [hello@remana.ai](mailto:hello@remana.ai?subject=waitlist)
 and a person will add you.
 
 </div>

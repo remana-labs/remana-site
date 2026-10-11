@@ -3,28 +3,153 @@ import Base from "../layouts/Base.astro";
 import BrandMark from "../components/BrandMark.astro";
 import ProvenanceExample from "../components/ProvenanceExample.astro";
 import Waitlist from "../components/Waitlist.astro";
+import Phone from "../components/Phone.astro";
+import Icon from "../components/Icon.astro";
+
+// Every sentence on this page describes the app on main today. Check against the privacy policy
+// and the Play listing (remana-labs/remana docs/play/listing.md) before changing a claim.
+const steps = [
+  { icon: "mic", title: "Record", text: "Tap once at the start of a meeting. Remana records on your phone and shows the transcript as it goes." },
+  { icon: "cloud", title: "Listen", text: "Our servers turn speech into text and tell voices apart, then hand the result straight back. They answer and discard." },
+  { icon: "phone", title: "Remember", text: "Facts, commitments and open questions, per person, land in your memory store. It lives on your phone, encrypted." },
+] as const;
+const features = [
+  { icon: "users", title: "Knows who said it", text: "Name a speaker once. Remana recognises their voice in later meetings, on your phone." },
+  { icon: "calendar", title: "Briefings before you walk in", text: "What you agreed last time, what is still open, and what you noted about the people in the room." },
+  { icon: "search", title: "Ask across meetings", text: "“What did Priya promise about the budget?” gets an answer with the line it came from." },
+  { icon: "play", title: "Every item links to the moment", text: "Tap a fact to hear it said. Nothing is summarised away from its source." },
+  { icon: "sheet", title: "Export to Excel", text: "A meeting’s transcript and memory as a spreadsheet, in one tap." },
+  { icon: "calendar", title: "Calendar and contacts, if you allow it", text: "Meetings get their titles and attendees from your calendar; people match your contacts." },
+] as const;
+const privacy = [
+  { icon: "lock", title: "Encrypted on your phone", text: "Your memory store is sealed with a key in the phone’s secure hardware. Voiceprints never leave it." },
+  { icon: "cloud", title: "The cloud answers and discards", text: "Speech-to-text and the language model keep nothing after the request. Speaker recognition holds audio for an hour at most." },
+  { icon: "eyeoff", title: "Backups we cannot read", text: "Optional, end-to-end encrypted on your phone. We store the copy; we never hold the key." },
+] as const;
 ---
-<Base title="remana" description="A meeting memory that knows what was said, and what it only inferred.">
-  <section class="hero">
-    <BrandMark height={56} />
-    <h1>A meeting memory that knows what was said — and what it only inferred.</h1>
-    <p>Record a meeting on your phone. Remana turns it into memory — the facts, the commitments, the open questions, per person — and marks every one of them: <strong>said</strong>, or <strong>inferred</strong>. Your memory lives only on your phone; the cloud turns speech into text and text into memory, and hands it straight back.</p>
-    <Waitlist />
-    <p class="meta">Android first · iOS later</p>
+<Base title="remana" description="A meeting memory that knows what was said, and what it only inferred. Record on your phone; your memory stays on it." wide>
+  <section class="hero wrap">
+    <div class="copy">
+      <p class="eyebrow">Meeting memory for your phone</p>
+      <h1>Knows what was said. Says what it only inferred.</h1>
+      <p class="lede">Record a meeting on your phone. Remana turns it into memory — the facts, the commitments, the open questions, per person — and marks every one as <strong>said</strong> or <strong>inferred</strong>. Your memory lives only on your phone.</p>
+      <div id="waitlist"><Waitlist id="waitlist-hero" /></div>
+      <p class="meta">Android first · iOS in testing · No ads, no tracking</p>
+    </div>
+    <div class="visual" aria-hidden="true">
+      <Phone src="/screens/meeting.png" alt="" width={320} eager />
+      <div class="glow"></div>
+    </div>
   </section>
-  <ProvenanceExample />
-  <section aria-labelledby="screens-h">
-    <h2 id="screens-h">On your phone</h2>
-    <div class="screens">
-      <img src="/screens/home.png" width="360" height="772" alt="Home: the next meeting and open commitments" loading="lazy" />
-      <img src="/screens/meeting.png" width="360" height="772" alt="A meeting's facts, each carrying a provenance mark — these are still awaiting review" loading="lazy" />
-      <img src="/screens/meetings.png" width="360" height="772" alt="Meetings: every recording, with who still needs a name" loading="lazy" />
+
+  <section class="section alt" aria-labelledby="prov-h">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">The idea</p>
+        <h2 id="prov-h">Two kinds of memory, never confused</h2>
+        <p>Every tool blends what people said with what it concluded. Remana keeps them apart, item by item, so you always know which is which before you act on it.</p>
+      </div>
+      <ProvenanceExample />
+    </div>
+  </section>
+
+  <section class="section" id="how" aria-labelledby="how-h">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">How it works</p>
+        <h2 id="how-h">Three steps, one tap</h2>
+      </div>
+      <ol class="steps grid-3">
+        {steps.map((s, i) => (
+          <li class="card">
+            <span class="num">{i + 1}</span>
+            <span class="ico"><Icon name={s.icon} /></span>
+            <h3>{s.title}</h3>
+            <p>{s.text}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="section alt" aria-labelledby="feat-h">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">What you get</p>
+        <h2 id="feat-h">A memory that works across meetings</h2>
+      </div>
+      <ul class="features grid-3">
+        {features.map((f) => (
+          <li class="card">
+            <span class="ico"><Icon name={f.icon} /></span>
+            <h3>{f.title}</h3>
+            <p>{f.text}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" id="privacy" aria-labelledby="priv-h">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Privacy by design</p>
+        <h2 id="priv-h">Your memory lives on your phone</h2>
+        <p>Not a promise in a settings page: it is how the software is built. The <a href="/privacy">privacy policy</a> says exactly what leaves your phone, in plain words, and changes before the code does.</p>
+      </div>
+      <ul class="features grid-3">
+        {privacy.map((f) => (
+          <li class="card">
+            <span class="ico"><Icon name={f.icon} /></span>
+            <h3>{f.title}</h3>
+            <p>{f.text}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section alt" aria-labelledby="screens-h">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">On your phone</p>
+        <h2 id="screens-h">Built for the meeting you are in</h2>
+      </div>
+      <div class="screens">
+        <Phone src="/screens/home.png" alt="Home: the next meeting and open commitments" width={280} />
+        <Phone src="/screens/meeting.png" alt="A meeting's facts, each carrying a said or inferred mark" width={280} />
+        <Phone src="/screens/meetings.png" alt="Meetings: every recording, with who still needs a name" width={280} />
+      </div>
+    </div>
+  </section>
+
+  <section class="section closing" aria-labelledby="join-h">
+    <div class="wrap">
+      <div class="join">
+        <BrandMark height={40} label="" />
+        <h2 id="join-h">Be the first to try it</h2>
+        <p>We are letting people in a few at a time while the memory earns trust. Leave your email and we will write when it is your turn.</p>
+        <Waitlist id="waitlist-footer" compact />
+      </div>
     </div>
   </section>
 </Base>
 <style>
-  .hero { padding-block: var(--space-xxxl) var(--space-xl); display: grid; gap: var(--space-lg); }
-  .hero p { font-size: 1.125rem; } .meta { color: var(--ink-2); font-size: 0.875rem; }
-  .screens { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--space-lg); }
-  .screens img { width: 100%; height: auto; border-radius: var(--radius-lg); border: 1px solid var(--line); }
+  .hero { display: grid; gap: var(--space-xxl); align-items: center; padding-block: var(--section); }
+  @media (min-width: 60rem) { .hero { grid-template-columns: 1.15fr 1fr; gap: var(--space-xxxl); } }
+  .copy { display: grid; gap: var(--space-xl); }
+  .lede { font-size: var(--text-lg); max-width: 36rem; }
+  .meta { font-size: var(--text-sm); }
+  .visual { position: relative; display: grid; place-items: center; }
+  .glow { position: absolute; inset: 10% 0; z-index: -1; border-radius: 50%; filter: blur(60px); opacity: .35;
+    background: radial-gradient(closest-side, var(--accent), transparent 70%); }
+  .steps, .features { list-style: none; margin: 0; padding: 0; }
+  .steps li, .features li { display: grid; gap: var(--space-md); align-content: start; }
+  .steps li { position: relative; }
+  .num { position: absolute; top: var(--space-lg); right: var(--space-lg); font-size: var(--text-sm); font-weight: 600; color: var(--ink-2); }
+  .ico { display: inline-grid; place-items: center; width: 44px; height: 44px; border-radius: var(--radius-md); background: var(--accent-soft); color: var(--accent); }
+  .screens { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--space-xxl); }
+  .closing { padding-bottom: 0; }
+  .join { display: grid; gap: var(--space-lg); justify-items: center; text-align: center; max-width: 36rem; margin-inline: auto; }
+  .join p { max-width: 32rem; }
 </style>

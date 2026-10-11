@@ -1,17 +1,32 @@
 ---
+/** The app's own marks (ProvenanceMark.kt): solid = said, hollow = inferred. The copy is the app's: "From the
+ *  transcript" / "Generated from your memory". */
 ---
-<section class="prov" aria-labelledby="prov-h">
-  <h2 id="prov-h">Two kinds of memory, never confused</h2>
-  <ul>
-    <li><span class="dot solid" aria-hidden="true"></span><div><strong>Priya will send the revised budget by Friday.</strong><small>From the transcript</small></div></li>
-    <li><span class="dot hollow" aria-hidden="true"></span><div><strong>The budget is probably tied to the Q4 headcount decision.</strong><small>Generated from your memory</small></div></li>
-  </ul>
-  <p>Every item Remana keeps carries its origin. A solid mark means someone said it. A hollow mark means Remana inferred it — and says so.</p>
-</section>
+<ul class="prov" aria-label="Two example memory items">
+  <li class="card">
+    <span class="mark solid" aria-hidden="true"></span>
+    <div>
+      <strong>Priya will send the revised budget by Friday.</strong>
+      <small><b>Said</b> · from the transcript · 14:32</small>
+    </div>
+  </li>
+  <li class="card">
+    <span class="mark hollow" aria-hidden="true"></span>
+    <div>
+      <strong>The budget is probably tied to the Q4 headcount decision.</strong>
+      <small><b>Inferred</b> · generated from your memory</small>
+    </div>
+  </li>
+</ul>
+<p class="legend">A solid mark means someone said it, and the item links to the moment. A hollow mark means Remana inferred it, and says so.</p>
 <style>
-  ul { list-style: none; padding: 0; margin: 0; display: grid; gap: var(--space-md); }
-  li { display: grid; grid-template-columns: 12px 1fr; gap: var(--space-md); align-items: start; background: var(--surface); border-radius: var(--radius-lg); padding: var(--space-lg); max-width: none; }
-  .dot { width: 12px; height: 12px; border-radius: 50%; margin-top: 6px; }
-  .solid { background: var(--accent); } .hollow { border: 2px solid var(--mark-hollow); }
-  li div { display: grid; gap: var(--space-xs); } strong { color: var(--ink); font-weight: 600; } small { color: var(--ink-2); }
+  .prov { list-style: none; padding: 0; margin: 0; display: grid; gap: var(--space-md); max-width: 44rem; }
+  .prov li { display: grid; grid-template-columns: 20px 1fr; gap: var(--space-lg); align-items: start; padding: var(--space-lg) var(--space-xl); }
+  .mark { width: 20px; height: 20px; border-radius: 50%; margin-top: 2px; }
+  .solid { background: var(--accent); box-shadow: 0 0 0 4px var(--accent-soft); }
+  .hollow { border: 3px solid var(--mark-hollow); }
+  .prov li div { display: grid; gap: var(--space-xs); }
+  .prov strong { font-size: var(--text-lg); line-height: 1.35; }
+  .prov small { color: var(--ink-2); font-size: var(--text-sm); } .prov b { color: var(--ink); font-weight: 600; }
+  .legend { margin-top: var(--space-lg); max-width: 44rem; }
 </style>
