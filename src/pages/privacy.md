@@ -42,7 +42,8 @@ speed, **not your text**. The exceptions, stated plainly, and one thing you choo
   can read it.
 - **On iPhone**, a finished recording is processed by our meeting service: it receives the audio,
   turns it into a transcript and memory, and holds that until your phone collects it. It deletes it
-  then, and at the latest after 72 hours.
+  then, and at the latest after 72 hours. Deleting your account removes anything it is still holding
+  for you, at once.
 - **Backup, if you turn it on** — see below. It is encrypted so that we cannot read it. Apart from
   the two above, it is the only place your memory is kept on our side.
 
@@ -101,7 +102,7 @@ for profiling.
 Deleting a meeting in the app deletes it from your phone, and from our backups within 7 days of your
 next backup. Apart from your encrypted backups, our servers hold no copy to delete, except a
 speaker-recognition job still inside its one-hour window and, on iPhone, a meeting our meeting
-service has not handed back yet (72 hours at most).
+service has not handed back yet (72 hours at most; deleting your account removes it at once).
 Uninstalling the app destroys the phone's store encryption key and, with it, the store on that phone
 (a backup, if you made one, stays restorable with your recovery code). **Settings → Delete account and
 backups** removes your account and every backup at once; the memory on your phone stays. You can
