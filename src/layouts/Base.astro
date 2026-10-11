@@ -1,45 +1,82 @@
 ---
 import "../styles/base.css";
 import Lockup from "../components/Lockup.astro";
-interface Props { title?: string; description?: string; frontmatter?: { title: string; description: string } }
+interface Props { title?: string; description?: string; wide?: boolean; frontmatter?: { title: string; description: string } }
 const { title, description } = Astro.props.frontmatter ?? Astro.props;
+const wide = Astro.props.wide ?? false;
 const canonical = new URL(Astro.url.pathname, Astro.site);
+const here = Astro.url.pathname.replace(/\/$/, "") || "/";
+const nav = [["/about", "About"], ["/support", "Support"], ["/press", "Press"]];
+const isProse = !wide;
 ---
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <title>{title === "remana" ? "remana" : `${title} · remana`}</title>
+    <title>{title === "remana" ? "Remana — a meeting memory that knows what was said" : `${title} · Remana`}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
     <link rel="icon" href="/favicon.ico" sizes="32x32" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
-    <meta property="og:title" content={title} />
+    <meta property="og:title" content={title === "remana" ? "Remana" : title} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={new URL("/og.png", Astro.site)} />
     <meta property="og:type" content="website" />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="theme-color" content="#0B0D0E" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#FAFBFB" media="(prefers-color-scheme: light)" />
     <link rel="sitemap" href="/sitemap-index.xml" />
   </head>
   <body>
-    <header class="wrap site-header">
-      <Lockup />
-      <nav aria-label="Site"><a href="/about">About</a><a href="/support">Support</a><a href="/press">Press</a></nav>
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="site-header">
+      <div class="wrap bar">
+        <Lockup />
+        <nav aria-label="Site">
+          {nav.map(([href, label]) => <a href={href} aria-current={here === href ? "page" : undefined}>{label}</a>)}
+        </nav>
+        <a class="btn btn-primary cta" href={here === "/" ? "#waitlist" : "/#waitlist"}>Join the waitlist</a>
+      </div>
     </header>
-    <main class="wrap"><slot /></main>
-    <footer class="wrap site-footer">
-      <a href="/privacy">Privacy</a> · <a href="/terms">Terms</a> · <a href="mailto:hello@remana.ai">hello@remana.ai</a>
-      <span>© 2026 Remana Labs</span>
+    <main id="main" class:list={[{ "wrap page": isProse }]}><slot /></main>
+    <footer class="site-footer">
+      <div class="wrap cols">
+        <div class="brand">
+          <Lockup />
+          <p>A meeting memory that knows what was said, and what it only inferred.</p>
+          <p class="fine">Android first · iOS in testing</p>
+        </div>
+        <div><h3>Product</h3><a href="/#how">How it works</a><a href="/#privacy">Privacy by design</a><a href="/#waitlist">Waitlist</a></div>
+        <div><h3>Company</h3><a href="/about">About</a><a href="/press">Press kit</a><a href="mailto:hello@remana.ai">hello@remana.ai</a></div>
+        <div><h3>Help</h3><a href="/support">Support</a><a href="/privacy">Privacy policy</a><a href="/terms">Terms of use</a></div>
+      </div>
+      <div class="wrap legal"><span>© 2026 Remana Labs</span><span>No cookies, no trackers on this site.</span></div>
     </footer>
-    <!-- Cloudflare Web Analytics: cookieless. Token is added in Task 5 once the Pages site exists. -->
+    <!-- Cloudflare Web Analytics: cookieless. Token is added once the Pages site exists. -->
   </body>
 </html>
 <style>
-  .site-header { display: flex; align-items: center; justify-content: space-between; gap: var(--space-lg); padding-block: var(--space-lg); }
-  nav { display: flex; gap: var(--space-lg); } nav a { color: var(--ink-2); text-decoration: none; }
-  .site-footer { display: flex; flex-wrap: wrap; gap: var(--space-sm) var(--space-md); padding-block: var(--space-xxl); color: var(--ink-2); font-size: 0.875rem; border-top: 1px solid var(--line); margin-top: var(--space-xxxl); }
-  .site-footer span { margin-left: auto; }
+  .site-header { position: sticky; top: 0; z-index: 5; background: color-mix(in srgb, var(--bg) 86%, transparent);
+    backdrop-filter: saturate(1.4) blur(12px); -webkit-backdrop-filter: saturate(1.4) blur(12px); border-bottom: 1px solid var(--line); }
+  .bar { display: flex; align-items: center; gap: var(--space-xl); min-height: 64px; }
+  nav { display: flex; gap: var(--space-xs); margin-left: auto; }
+  nav a { color: var(--ink-2); text-decoration: none; font-weight: 500; padding: var(--space-sm) var(--space-md); border-radius: var(--radius-pill);
+    transition: color var(--fast) var(--ease), background var(--fast) var(--ease); }
+  nav a:hover { color: var(--ink); background: var(--surface-high); }
+  nav a[aria-current="page"] { color: var(--ink); background: var(--accent-soft); }
+  .cta { min-height: 40px; padding-inline: var(--space-lg); font-size: var(--text-sm); }
+  @media (max-width: 40rem) { .cta { display: none; } nav { gap: 0; } nav a { padding-inline: var(--space-sm); } }
+  .page { padding-block: var(--space-xxxl) var(--section); }
+  .site-footer { border-top: 1px solid var(--line); background: var(--surface-low); margin-top: var(--section); }
+  .cols { display: grid; gap: var(--space-xxl); padding-block: var(--space-xxxl); grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr)); }
+  .cols .brand { grid-column: 1 / -1; display: grid; gap: var(--space-sm); max-width: 24rem; }
+  @media (min-width: 60rem) { .cols { grid-template-columns: 2fr 1fr 1fr 1fr; } .cols .brand { grid-column: auto; } }
+  .cols h3 { font-size: var(--text-sm); text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink); margin-bottom: var(--space-md); }
+  .cols div:not(.brand) { display: grid; gap: var(--space-sm); align-content: start; }
+  .cols div a { color: var(--ink-2); text-decoration: none; width: fit-content; } .cols div a:hover { color: var(--ink); text-decoration: underline; }
+  .fine { font-size: var(--text-sm); }
+  .legal { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--space-md); padding-block: var(--space-lg); border-top: 1px solid var(--line); color: var(--ink-2); font-size: var(--text-sm); }
 </style>
