@@ -26,18 +26,25 @@ always tell the two apart.
 - **The transcript** is sent to our language-model service to extract memory items, and, when you
   ask for a briefing or ask Remana a question, the relevant parts of your memory are sent to it to
   produce the answer.
+- **People's names** go with them: the names of the people in your meetings, including names from
+  your calendar and contacts if you connected them. When a calendar invitee has no name, their email
+  address is used as the name. Contacts' phone numbers and email addresses are not sent.
 
-All three services run on servers we operate, reached through `api.remana.ai`, which is fronted by
+These services run on servers we operate, reached through `api.remana.ai`, which is fronted by
 Cloudflare. Speech-to-text and the language model answer a request and discard it: they do not
-store your audio, transcripts or memory. Two exceptions, stated plainly, and one thing you choose:
+store your audio, transcripts or memory, and the language model's logs record request counts and
+speed, **not your text**. The exceptions, stated plainly, and one thing you choose:
 
-- Speaker recognition accepts a recording in parts, so it holds the audio on the server **for up to
-  one hour** while the parts arrive and the job runs, then deletes it.
-- The language-model server's **request logs** can currently include transcript text. They are
-  operational logs on the server itself, not a database, not backed up, and gone when the server
-  process is replaced. We are turning that logging off; this page will change when it is.
-- **Backup, if you turn it on** — see below. It is the only place your memory is stored on our side,
-  and it is encrypted so that we cannot read it.
+- Speaker recognition accepts a recording in parts. It holds the audio while the parts arrive and
+  the job runs, and deletes it as soon as the job ends, or after **one hour** if the job has not run
+  by then; an upload that stops halfway is deleted an hour after its last part. The result — who spoke when, and a voice signature per speaker so your phone can match
+  voices to people — is kept for up to one hour so your phone can collect it, and only your account
+  can read it.
+- **On iPhone**, a finished recording is processed by our meeting service: it receives the audio,
+  turns it into a transcript and memory, and holds that until your phone collects it. It deletes it
+  then, and at the latest after 72 hours.
+- **Backup, if you turn it on** — see below. It is encrypted so that we cannot read it. Apart from the two above, it is the only place your
+  memory is kept on our side.
 
 ## Backup
 
@@ -49,13 +56,18 @@ we can use: you keep a recovery code, and your phone's own backup (Google's, end
 with your screen lock) can hold the key so a new phone of the same kind restores without the code.
 **We cannot read your backups, and we cannot recover your code.**
 
+Each backup also carries a few unencrypted labels so that we can store and list it: when it was
+made, its size, the app version and platform, a random identifier for the device that made it, and
+the phone's model name (for example "SM-S901B" — never the name you gave your phone).
+
 A meeting you delete leaves our backups within 7 days of your next backup. Deleting your account
 removes all of your backups immediately.
 
 ## What stays on your phone
 
 Your memory store — meetings, people, facts, commitments, questions — your transcripts, and your
-voiceprints. The store is encrypted with a key that lives in your phone's secure hardware. Voice
+voiceprints (the voices you have named). The store is encrypted with a key that lives in your phone's
+secure hardware. Voice
 identification (matching a voice to a person you named) runs entirely on the phone; voiceprints
 never leave it except inside your encrypted backup, if you turn backup on, which we cannot read.
 
@@ -66,9 +78,18 @@ address, and use them only to authorise your phone's access to the services abov
 removes the access token from the phone and leaves everything already on it readable. Capture,
 search and on-device briefings keep working without an account.
 
+## Asking by voice
+
+If you ask Remana a question by speaking, Android turns your voice into text **on the phone**; the
+microphone button only appears on phones that can do that. On iPhone, Apple's speech recognition
+does it, and Apple may process the audio on its servers.
+
 ## Third parties
 
 - **Google** — Firebase Authentication for sign-in.
+- **Apple** — speech recognition for spoken questions on iPhone (see above).
+- **Hugging Face** — the app downloads its on-device models from Hugging Face when it first needs
+  them, which shows Hugging Face your IP address. Nothing about you or your meetings is sent.
 - **Cloudflare** — hosts this website and `api.remana.ai`, provides the spam check on the waitlist
   form (Turnstile) and cookieless analytics for this website (Web Analytics).
 
@@ -79,7 +100,8 @@ for profiling.
 
 Deleting a meeting in the app deletes it from your phone, and from our backups within 7 days of your
 next backup. Apart from your encrypted backups, our servers hold no copy to delete, except a
-speaker-recognition job still inside its one-hour window and the request logs described above.
+speaker-recognition job still inside its one-hour window and, on iPhone, a meeting our meeting
+service has not handed back yet (72 hours at most).
 Uninstalling the app destroys the phone's store encryption key and, with it, the store on that phone
 (a backup, if you made one, stays restorable with your recovery code). **Settings → Delete account and
 backups** removes your account and every backup at once; the memory on your phone stays. You can
@@ -93,7 +115,7 @@ Analytics on this site is cookieless and does not identify you. This site sets n
 
 ## Children
 
-Remana is not intended for anyone under 16, and we do not knowingly hold their data.
+Remana is not intended for anyone under 18, and we do not knowingly hold their data.
 
 ## Contact
 
@@ -101,6 +123,10 @@ Remana is not intended for anyone under 16, and we do not knowingly hold their d
 
 ## Changes to this policy
 
+- **2026-10-11** — what goes with your questions (people's names, including from your calendar and
+  contacts); the iPhone meeting service; speaker recognition's one-hour limit and who can read its
+  result; the language-model logs no longer include text; asking by voice; Hugging Face model
+  downloads; backup labels; minimum age 18.
 - **2026-10-01** — encrypted backup (optional), its deletion window, and in-app account deletion.
 - **2026-09-27** — first version, written for internal testing.
 
